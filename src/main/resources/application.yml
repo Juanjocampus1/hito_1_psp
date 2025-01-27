@@ -5,7 +5,7 @@ spring:
   application:
     name: HitoPSP
     datasource:
-      url: jdbc:mysql://localhost:3306/ecomerch
+      url: jdbc:mysql://localhost:3306/Ecomerch
       username: root
       password: curso
       driver-class-name: com.mysql.cj.jdbc.Driver
