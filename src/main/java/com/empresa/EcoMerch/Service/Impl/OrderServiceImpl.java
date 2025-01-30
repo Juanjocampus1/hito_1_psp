@@ -32,6 +32,14 @@ public class OrderServiceImpl implements IOrderService {
     }
 
     @Override
+    public Order update(Order order, Long id) {
+        Order orderToUpdate = orderRepository.findById(id).get();
+        orderToUpdate.setCustomer(order.getCustomer());
+        orderToUpdate.setOrderDate(order.getOrderDate());
+        return orderRepository.save(orderToUpdate);
+    }
+
+    @Override
     public void deleteById(Long id) {
         orderRepository.deleteById(id);
     }

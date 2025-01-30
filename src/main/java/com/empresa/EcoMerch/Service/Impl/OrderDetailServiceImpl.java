@@ -1,3 +1,4 @@
+
 // src/main/java/com/empresa/EcoMerch/Service/Impl/OrderDetailServiceImpl.java
 package com.empresa.EcoMerch.Service.Impl;
 
@@ -29,6 +30,15 @@ public class OrderDetailServiceImpl implements IOrderDetailService {
     @Override
     public OrderDetail save(OrderDetail orderDetail) {
         return orderDetailRepository.save(orderDetail);
+    }
+
+    @Override
+    public OrderDetail update(OrderDetail orderDetail, Long id) {
+        OrderDetail orderDetailToUpdate = orderDetailRepository.findById(id).get();
+        orderDetailToUpdate.setOrder(orderDetail.getOrder());
+        orderDetailToUpdate.setProduct(orderDetail.getProduct());
+        orderDetailToUpdate.setQuantity(orderDetail.getQuantity());
+        return orderDetailRepository.save(orderDetailToUpdate);
     }
 
     @Override

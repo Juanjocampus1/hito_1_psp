@@ -66,6 +66,20 @@ public class ProductController {
         return ResponseEntity.ok(productServiceImpl.save(product));
     }
 
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody ProductDTO productDTO) {
+
+        Product product = Product.builder()
+                .id(productDTO.getId())
+                .name(productDTO.getName())
+                .description(productDTO.getDescription())
+                .price(productDTO.getPrice())
+                .stock(productDTO.getStock())
+                .build();
+
+        return ResponseEntity.ok(productServiceImpl.update(product, id));
+    }
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteById(@PathVariable Long id) {
 

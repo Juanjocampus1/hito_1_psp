@@ -59,6 +59,17 @@ public class OrderController {
         return ResponseEntity.ok(orderServiceImpl.save(order));
     }
 
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> update(@RequestBody OrderDTO orderDTO, @PathVariable Long id) {
+        Order order = Order.builder()
+                .id(orderDTO.getId())
+                .customer(Customer.builder().id(orderDTO.getCustomerId()).build())
+                .orderDate(orderDTO.getOrderDate())
+                .status(orderDTO.getStatus())
+                .build();
+        return ResponseEntity.ok(orderServiceImpl.update(order, id));
+    }
+
     @DeleteMapping("/delete/{id}")
 
     public ResponseEntity<?> deleteById(@PathVariable Long id) {

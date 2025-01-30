@@ -20,7 +20,7 @@ public class CustomerController {
     @GetMapping("/find/{id}")
     public ResponseEntity<?> findById(@PathVariable Long id) {
 
-        Optional<Customer> customerOptional = Optional.ofNullable(customerServiceImpl.findById(id));
+        Optional<Customer> customerOptional = customerServiceImpl.findById(id);
 
         if (customerOptional.isPresent()){
             Customer customer = customerOptional.get();
@@ -63,6 +63,20 @@ public class CustomerController {
                 .build();
 
         return ResponseEntity.ok(customerServiceImpl.save(customer));
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody CustomerDTO customerDTO) {
+
+        Customer customer = Customer.builder()
+                .id(customerDTO.getId())
+                .name(customerDTO.getName())
+                .email(customerDTO.getEmail())
+                .phone(customerDTO.getPhone())
+                .address(customerDTO.getAddress())
+                .build();
+
+        return ResponseEntity.ok(customerServiceImpl.update(customer, id));
     }
 
     @DeleteMapping("/delete/{id}")
