@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -41,15 +42,16 @@ public class ProductController {
 
     @GetMapping("/findAll")
     public ResponseEntity<?> findAll() {
-
-        ProductDTO productDTO = ProductDTO.builder()
-                .id(productServiceImpl.findAll().get(0).getId())
-                .name(productServiceImpl.findAll().get(0).getName())
-                .description(productServiceImpl.findAll().get(0).getDescription())
-                .price(productServiceImpl.findAll().get(0).getPrice())
-                .stock(productServiceImpl.findAll().get(0).getStock())
-                .build();
-        return ResponseEntity.ok(productDTO);
+        List<ProductDTO> productDTOs = productServiceImpl.findAll().stream()
+                .map(product -> ProductDTO.builder()
+                        .id(product.getId())
+                        .name(product.getName())
+                        .description(product.getDescription())
+                        .price(product.getPrice())
+                        .stock(product.getStock())
+                        .build())
+                .collect(java.util.stream.Collectors.toList());
+        return ResponseEntity.ok(productDTOs);
     }
 
     @PostMapping("/save")

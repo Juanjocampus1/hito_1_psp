@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/customer")
@@ -40,15 +42,16 @@ public class CustomerController {
 
     @GetMapping("/findAll")
     public ResponseEntity<?> findAll() {
-
-        CustomerDTO customerDTO = CustomerDTO.builder()
-                .id(customerServiceImpl.findAll().get(0).getId())
-                .name(customerServiceImpl.findAll().get(0).getName())
-                .email(customerServiceImpl.findAll().get(0).getEmail())
-                .phone(customerServiceImpl.findAll().get(0).getPhone())
-                .address(customerServiceImpl.findAll().get(0).getAddress())
-                .build();
-        return ResponseEntity.ok(customerDTO);
+        List<CustomerDTO> customerDTOs = customerServiceImpl.findAll().stream()
+                .map(customer -> CustomerDTO.builder()
+                        .id(customer.getId())
+                        .name(customer.getName())
+                        .email(customer.getEmail())
+                        .phone(customer.getPhone())
+                        .address(customer.getAddress())
+                        .build())
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(customerDTOs);
     }
 
     @PostMapping("/save")
