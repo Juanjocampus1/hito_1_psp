@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -43,14 +44,16 @@ public class OrderDetailController {
 
     @GetMapping("/findAll")
     public ResponseEntity<?> findAll() {
-        OrderDetailDTO orderDetailDTO = OrderDetailDTO.builder()
-                .id(orderDetailServiceImpl.findAll().get(0).getId())
-                .orderId(orderDetailServiceImpl.findAll().get(0).getOrder().getId())
-                .productId(orderDetailServiceImpl.findAll().get(0).getProduct().getId())
-                .quantity(orderDetailServiceImpl.findAll().get(0).getQuantity())
-                .price(orderDetailServiceImpl.findAll().get(0).getPrice())
-                .build();
-        return ResponseEntity.ok(orderDetailDTO);
+        List <OrderDetailDTO> orderDetailDTOs = orderDetailServiceImpl.findAll().stream()
+                .map(orderDetail -> OrderDetailDTO.builder()
+                        .id(orderDetail.getId())
+                        .orderId(orderDetail.getOrder().getId())
+                        .productId(orderDetail.getProduct().getId())
+                        .quantity(orderDetail.getQuantity())
+                        .price(orderDetail.getPrice())
+                        .build())
+                .collect(java.util.stream.Collectors.toList());
+        return ResponseEntity.ok(orderDetailDTOs);
     }
 
     @PostMapping("/save")

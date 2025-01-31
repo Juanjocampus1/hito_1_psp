@@ -1,9 +1,7 @@
 package com.empresa.EcoMerch.Entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
 import java.math.BigDecimal;
 
 @Entity
@@ -12,7 +10,9 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "nombre")
     private String name;
+    @Column(name = "descripcion")
     private String description;
     private BigDecimal price;
     private int stock;

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -39,13 +40,15 @@ public class OrderController {
 
     @GetMapping("/findAll")
     public ResponseEntity<?> findAll() {
-        OrderDTO orderDTO = OrderDTO.builder()
-                .id(orderServiceImpl.findAll().get(0).getId())
-                .customerId(orderServiceImpl.findAll().get(0).getCustomer().getId())
-                .orderDate(orderServiceImpl.findAll().get(0).getOrderDate())
-                .status(orderServiceImpl.findAll().get(0).getStatus())
-                .build();
-        return ResponseEntity.ok(orderDTO);
+        List<OrderDTO> orderDTOs = orderServiceImpl.findAll().stream()
+                .map(order -> OrderDTO.builder()
+                        .id(order.getId())
+                        .customerId(order.getCustomer().getId())
+                        .orderDate(order.getOrderDate())
+                        .status(order.getStatus())
+                        .build())
+                .collect(java.util.stream.Collectors.toList());
+        return ResponseEntity.ok(orderDTOs);
     }
 
     @PostMapping("/save")
